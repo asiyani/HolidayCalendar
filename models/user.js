@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 let userSchema = new mongoose.Schema({
     name:{
@@ -18,7 +20,7 @@ let userSchema = new mongoose.Schema({
     password:{
         type:String,
         required:true,
-        minlength:[6,'Min 6 charector is required for password']
+        minlength:[6,'Min 6 character is required for password']
     },
     isAdmin:{
         type:Boolean,
@@ -40,6 +42,42 @@ let userSchema = new mongoose.Schema({
         }
     }]
 });
+
+userSchema.methods.generateAuthToken = function(){
+    var user = this;
+    var token = jwt.sign({ id:user._id.toHexString(), isAdmin:user.isAdmin, access:'auth'}, 'abc123').toString();
+    user.tokens.push({access:'auth',token:token});
+    return user.save().then( () => {
+        return token;
+    }).catch( e => console.log(e));
+};
+
+userSchema.statics.findByToken = function(token){
+    var User = this;
+    return User.find({'tokens.token':token}).then( (user) => {
+                        if(!user)
+                            return Promise.reject();
+                        Promise.resolve(user);
+                    }).catch( e => Promise.reject());
+};
+
+userSchema.pre('save', function(next){
+    let user = this;
+    if( user.isModified('password')){
+        bcrypt.genSalt(10, function(err, salt) {
+            bcrypt.hash(user.password, salt, function(err, hash) {
+                user.password = hash;
+                next();
+            });
+        });
+    }else{
+        next();
+    }
+});
+
+
+
+
 
 let User = mongoose.model('User', userSchema);
 

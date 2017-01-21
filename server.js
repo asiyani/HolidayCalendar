@@ -1,8 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const {moongoose} = require('./config/mongoose');
+const {mongoose} = require('./config/mongoose');
 const {User} = require('./models/user');
+const {authenticate} = require('./middleware/authenticate')
+const {staffRoutes} = require('./controllers/api/staff');
+const {holidayRoutes} = require('./controllers/api/holiday');
+const {userRoutes} = require('./controllers/user')
+
 
 const app = express();
 
@@ -12,7 +17,9 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 
 
-
+app.use('/user',userRoutes);
+app.use('/api/v1/staff', staffRoutes);
+app.use('/api/v1/holiday', holidayRoutes);
 
 /*
 // create application/x-www-form-urlencoded parser
