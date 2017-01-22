@@ -9,7 +9,7 @@ router.get('/department/:deparment', (req,res) => {
 
 //Get user by ID -> return user = json
 router.get('/id/:id', (req,res) => {
-res.send('/:id');
+    res.send('/:id');
 });
 
 //Get user by ID -> return user = json
@@ -19,7 +19,7 @@ router.patch('/id/:id', (req,res) => {
 
 // Add user to data base return 200 - user = json
 router.post('/', (req,res) => {
-res.send('/adduser');
+    res.send('/adduser');
 });
 
 

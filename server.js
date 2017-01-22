@@ -11,7 +11,7 @@ const {userRoutes} = require('./controllers/user')
 
 const app = express();
 
-let port = process.env.PORT || 3000
+let port = process.env.PORT || 3000 ;
 
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());

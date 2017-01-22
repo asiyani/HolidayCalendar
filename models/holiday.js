@@ -4,8 +4,12 @@ const {ObjectID} = require('mongodb');
 
 
 let holidaySchema = new mongoose.Schema({
-    user_id:{
+    staff_id:{
         type:mongoose.Schema.Types.ObjectId,
+        required:true
+    },
+    staffName:{
+        type:String,
         required:true
     },
     department:{
@@ -31,10 +35,10 @@ let holidaySchema = new mongoose.Schema({
         type:Date,
         required:true,
     },
-    actionedDate:{
+    actionDate:{
         type:Date
     },
-    actionedBy:{
+    actionBy:{
         type:String
     }
 
