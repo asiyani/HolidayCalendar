@@ -1,11 +1,12 @@
 const express = require('express');
+const {isAuthenticated} = require('./../middleware/isAuthenticated');
 
 const router = express.Router();
 
 
 
 //Get user by ID -> return user = json
-router.get('/', (req,res) => {
+router.get('/',isAuthenticated ,(req,res) => {
 res.send('GET USER DETAILS TOKEN REQ');
 });
 

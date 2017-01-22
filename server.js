@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 
 const {mongoose} = require('./config/mongoose');
 const {User} = require('./models/user');
-const {authenticate} = require('./middleware/authenticate')
+const {isAuthenticated} = require('./middleware/isAuthenticated')
 const {staffRoutes} = require('./controllers/api/staff');
 const {holidayRoutes} = require('./controllers/api/holiday');
 const {userRoutes} = require('./controllers/user')
