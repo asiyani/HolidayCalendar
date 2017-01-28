@@ -53,7 +53,7 @@ userSchema.methods.generateAuthToken = function(){
 };
 
 userSchema.statics.findByToken = function(token){
-    var User = this;
+    var Users = this;
     var decode;
     try {
         decode = jwt.verify(token, 'abc123');
@@ -61,7 +61,7 @@ userSchema.statics.findByToken = function(token){
        return Promise.reject();
     }
 
-    return User.findOne({
+    return Users.findOne({
         '_id':decode._id,
         'tokens.token':token,
         'tokens.access':'auth'
@@ -74,10 +74,10 @@ userSchema.methods.removeToken = function(token) {
 }
 
 userSchema.statics.findByCredential = function(email,password ){
-    var User = this;
+    var Users = this;
     
     return new Promise ( (resolve, reject) => {
-        User.findOne({email:email}).then( (user) => {
+        Users.findOne({email:email}).then( (user) => {
         if(!user){
             return reject('No user found')
         }
@@ -113,6 +113,6 @@ userSchema.pre('save', function(next){
 
 
 
-let User = mongoose.model('User', userSchema);
+let Users = mongoose.model('Users', userSchema);
 
-module.exports = {User};
+module.exports = {Users};

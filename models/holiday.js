@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 const {ObjectID} = require('mongodb');
 
-
+//https://esfiddle.net/iy931vop/
+//https://esfiddle.net/iy93aaq6/
+//Random date generator
 
 let holidaySchema = new mongoose.Schema({
     staff_id:{
@@ -44,6 +46,6 @@ let holidaySchema = new mongoose.Schema({
 
 });
 
-let Holiday = mongoose.model('Holiday', holidaySchema);
+let Holidays = mongoose.model('Holidays', holidaySchema);
 
-module.exports = {Holiday};
+module.exports = {Holidays};

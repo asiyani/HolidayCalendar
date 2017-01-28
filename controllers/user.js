@@ -2,7 +2,7 @@ const express = require('express');
 const _ = require('lodash');
 
 const {isAuthenticated} = require('./../middleware/isAuthenticated');
-const {User} = require('./../models/user');
+const {Users} = require('./../models/user');
 
 const router = express.Router();
 
@@ -22,7 +22,7 @@ router.post('/', (req,res) => {
 router.post('/login',(req,res) => {
     var body = _.pick(req.body,['email','password']);
 
-    User.findByCredential(body.email,body.password).then( user => {
+    Users.findByCredential(body.email,body.password).then( user => {
                                         return user.generateAuthToken();
                                     })
                                     .then( token => {
@@ -35,7 +35,7 @@ router.post('/login',(req,res) => {
 //Delete user from Database 
 router.delete('/logout', isAuthenticated ,(req,res) => {
     let token = req.header('x-auth');
-    User.findByToken(token).then( user => {
+    Users.findByToken(token).then( user => {
                             if(!user)
                                 return Promise.reject();
                             return user.removeToken(token);

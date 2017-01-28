@@ -1,11 +1,11 @@
-const {User} = require('./../models/user');
+const {Users} = require('./../models/user');
 const _ = require('lodash');
 const bcrypt = require('bcryptjs');
 
 
 let isAuthenticated = (req,res,next) => {
     token = req.header('x-auth');
-    User.findByToken(token).then( (user) => {
+    Users.findByToken(token).then( (user) => {
                             if(!user)
                                return Promise.reject();
 
