@@ -17,8 +17,8 @@ router.get('/search/', (req,res) => {
     
     if(_.has(searchQuery,'staff_id') )
          dbQuery.staff_id = searchQuery.staff_id ;
-    if(_.has(searchQuery,'department') )
-        dbQuery.department = searchQuery.department ;
+    if(_.has(searchQuery,'department') ) // department query should be incasesensitive.......
+        dbQuery.department = new RegExp('^'+searchQuery.department+'$', "i") ;
 
     if(searchQuery.hasOwnProperty("fromDate") && searchQuery.hasOwnProperty("toDate")){
         

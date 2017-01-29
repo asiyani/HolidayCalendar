@@ -4,7 +4,8 @@
   "description": "App to book staff holiday and display all holidays",
   "main": "server.js",
   "scripts": {
-    "start:watch": "nodemon --delay 10 server.js"
+    "start:watch": "nodemon --delay 10 server.js",
+    "test": "mocha ./test/**.test.js"
   },
   "repository": {
     "type": "git",

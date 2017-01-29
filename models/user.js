@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const _ = require('lodash');
 
 let userSchema = new mongoose.Schema({
     name:{
@@ -52,6 +53,11 @@ userSchema.methods.generateAuthToken = function(){
     }).catch( e => console.log(e));
 };
 
+userSchema.methods.removeToken = function(token) {
+    var user = this;
+    return user.update({$pull:{'tokens':{token}}})
+}
+
 userSchema.statics.findByToken = function(token){
     var Users = this;
     var decode;
@@ -67,11 +73,6 @@ userSchema.statics.findByToken = function(token){
         'tokens.access':'auth'
     }); 
 };
-
-userSchema.methods.removeToken = function(token) {
-    var user = this;
-    return user.update({$pull:{'tokens':{token}}})
-}
 
 userSchema.statics.findByCredential = function(email,password ){
     var Users = this;
@@ -95,6 +96,7 @@ userSchema.statics.findByCredential = function(email,password ){
     
 }
 
+
 userSchema.pre('save', function(next){
     let user = this;
     if( user.isModified('password')){
@@ -109,7 +111,19 @@ userSchema.pre('save', function(next){
     }
 });
 
-
+userSchema.pre('findOneAndUpdate', function(next){
+    let query = this;
+    if( _.has(query._update,'password')){
+        bcrypt.genSalt(10, function(err, salt) {
+            bcrypt.hash(query._update.password, salt, function(err, hash) {
+                query._update.password = hash;
+                next();
+            });
+        });
+    }else{
+        next();
+    }
+});
 
 
 
