@@ -1,0 +1,90 @@
+[
+  {
+    "_id": "588530ce623d3abb2b10f04b",
+    "name": "Ashok Siyani",
+    "email": "ashok@email.com",
+    "password": "123456",
+    "isAdmin": true,
+    "department": "IT"
+  },
+  {
+    "_id": "58850067b69d474e47e4e480",
+    "name": "Peters Watts",
+    "email": "peters@emai.com",
+    "password": "acb123",
+    "isAdmin": false,
+    "department": "IT"
+  },
+  {
+    "_id": "58850067600108ad47ed985e",
+    "name": "Betty Higgins",
+    "email": "betty@emai.com",
+    "password": "acb123",
+    "isAdmin": false,
+    "department": "Marketing"
+  },
+  {
+    "_id": "5885006736c52f9298732df1",
+    "name": "Burks Farrell",
+    "email": "burks@emai.com",
+    "password": "acb123",
+    "isAdmin": true,
+    "department": "IT"
+  },
+  {
+    "_id": "58850067341b89760e2c24b3",
+    "name": "Watson Gallegos",
+    "email": "watson@emai.com",
+    "password": "test123",
+    "isAdmin": true,
+    "department": "Legal"
+  },
+  {
+    "_id": "58850067822c1fdf3779162e",
+    "name": "Graham Robles",
+    "email": "graham@emai.com",
+    "password": "test123",
+    "isAdmin": true,
+    "department": "Marketing"
+  },
+  {
+    "_id": "58850067a23dbc3abd473833",
+    "name": "Chris Haley",
+    "email": "chris@emai.com",
+    "password": "test123",
+    "isAdmin": false,
+    "department": "Marketing"
+  },
+  {
+    "_id": "588500672af344aa860fd1d4",
+    "name": "Isabelle Mercado",
+    "email": "isabelle@emai.com",
+    "password": "test123",
+    "isAdmin": true,
+    "department": "Legal"
+  },
+  {
+    "_id": "58850067f290b56154dd67d7",
+    "name": "Charity Parks",
+    "email": "charity@emai.com",
+    "password": "acb123",
+    "isAdmin": false,
+    "department": "Human Resources"
+  },
+  {
+    "_id": "58850067ac8a1e31449039e9",
+    "name": "Langley Wolfe",
+    "email": "langley@emai.com",
+    "password": "acb123",
+    "isAdmin": false,
+    "department": "IT"
+  },
+  {
+    "_id": "58850067dbc47b1496d3132a",
+    "name": "Cecile Schwartz",
+    "email": "cecile@emai.com",
+    "password": "acb123",
+    "isAdmin": false,
+    "department": "Legal"
+  }
+]

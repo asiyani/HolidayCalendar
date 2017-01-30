@@ -85,7 +85,7 @@ userSchema.statics.findByCredential = function(email,password ){
         bcrypt.compare(password, user.password, function(err, result) {
             if(err)
                 return reject('Error occurred ')
-            if(user){
+            if(result){
                 resolve(user);
             }else{
                 reject('Password doesn\'t match');

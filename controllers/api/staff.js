@@ -33,14 +33,15 @@ router.get('/id/:id', (req,res) => {
 
 //Get user by ID -> return user = json
 router.patch('/id/:id', (req,res) => {
+    if(_.has(req.body,['name']) || _.has(req.body,['email'])){
+        return res.status(400).send({message:'can not change user name and password'});
+    }
     let body = _.pick(req.body,['password','isAdmin','department','job_role']);
     let id = req.params['id'];
-
     Users.findOneAndUpdate({_id:id},body,{new:true}).then( user => {
                                     if(!user){
                                         return res.status(404).send();
                                     }
-
                                     res.send({user});
                                 })
                                 .catch( e => res.status(400).send(e));

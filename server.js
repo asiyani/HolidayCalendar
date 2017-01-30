@@ -39,3 +39,6 @@ app.post('/login', urlencodedParser, function (req, res) {
 app.listen(port, () => {
     console.log('Server listening on Port:',port);
 })
+
+
+module.exports.app = app ;
