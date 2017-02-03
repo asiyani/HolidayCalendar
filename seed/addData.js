@@ -1,3 +1,4 @@
+const fs = require('fs');
 const { mongoose } = require('./../config/mongoose');
 const { Users } = require('./../models/user');
 const { Holidays } = require('./../models/holiday');
@@ -8,11 +9,16 @@ const holidayType = ["pending", "approved", "declined"];
 const holidayStatus = ["Hourly", "Full Day", "Half Day"]
 
 const addUser = () => {
-    users.forEach( user => {
-        let newUser = new Users(user)
-        newUser.save()
-    });
-    console.log('All users added.......');
+    return new Promise( (resolve,reject) => {
+        users.forEach( user => {
+            let newUser = new Users(user)
+            newUser.save().catch( e => {
+                return reject(e);
+            })
+        });
+        console.log('Users are added.......');
+        resolve();
+    })
 };
 
 function randomDate() {
@@ -42,35 +48,40 @@ function addHours(oriDate, hours) {
 }
 
 const addHoliday = () => {
-    users.forEach((user) => {
     var userHolidays = [];
-    for (let i = 0; i < 5; i++) {
-        let startDate = randomDate();
-        let holidayType = holidayStatus[Math.floor(Math.random() * 2)];
-        let endDate;
-        if (holidayType === "Full Day") {
-            endDate = addDays(startDate, Math.floor(Math.random() * 10) + 1);
-        } else {
-            endDate = addHours(startDate, Math.floor(Math.random() * 10) + 1);
-        }
-        var holiday = {
-            staff_id: user._id,
-            staffName: user.name,
-            department: user.department,
-            startDate: startDate,
-            endDate: endDate,
-            holidayType: holidayType,
-            status: holidayStatus[Math.floor(Math.random() * 2)],
-            requestedDate: addDays(startDate, -(Math.floor(Math.random() * 10) + 1)),
-        }
-        userHolidays.push(holiday);
-   }
-
-   Holidays.insertMany(userHolidays);
-
-   console.log("All holidays are added:"+ user.name)
-
-    });
+    return new Promise ( (resolve, reject ) => {
+        users.forEach((user) => {
+            for (let i = 0; i < 5; i++) {
+                let startDate = randomDate();
+                let holidayType = holidayStatus[Math.floor(Math.random() * 2)];
+                let endDate;
+                if (holidayType === "Full Day") {
+                    endDate = addDays(startDate, Math.floor(Math.random() * 10) + 1);
+                } else {
+                    endDate = addHours(startDate, Math.floor(Math.random() * 10) + 1);
+                }
+                var holiday = {
+                    _id: new mongoose.Types.ObjectId(),
+                    staff_id: user._id,
+                    staffName: user.name,
+                    department: user.department,
+                    startDate: startDate,
+                    endDate: endDate,
+                    holidayType: holidayType,
+                    status: holidayStatus[Math.floor(Math.random() * 2)],
+                    requestedDate: addDays(startDate, -(Math.floor(Math.random() * 10) + 1)),
+                }
+                userHolidays.push(holiday);
+            }
+        });
+        fs.writeFileSync( __dirname + '/holidays.json', JSON.stringify(userHolidays), 'utf-8');
+        Holidays.insertMany(userHolidays).catch( e => {
+                return reject(e);
+            });
+        console.log("Holidays are added.....");
+        resolve();
+    })
+    
 }
 
 module.exports = {addUser,addHoliday};

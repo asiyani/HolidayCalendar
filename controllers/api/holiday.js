@@ -7,7 +7,7 @@ const router = express.Router();
 
 //Search Holiday -> return holidays = json
 router.get('/search/', (req,res) => {
-    let searchQuery = _.pick(req.query,["staff_id","department","fromDate","toDate"]);
+    let searchQuery = _.pick(req.query,["staff_id","staffName","department","fromDate","toDate"]);
     
 	
     // .query.filter(models.holiday_table.department == request.get_json()['department'],
@@ -17,13 +17,15 @@ router.get('/search/', (req,res) => {
     
     if(_.has(searchQuery,'staff_id') )
          dbQuery.staff_id = searchQuery.staff_id ;
+    if(_.has(searchQuery,'staffName') )
+         dbQuery.staffName = searchQuery.staffName ;
     if(_.has(searchQuery,'department') ) // department query should be incasesensitive.......
         dbQuery.department = new RegExp('^'+searchQuery.department+'$', "i") ;
 
     if(searchQuery.hasOwnProperty("fromDate") && searchQuery.hasOwnProperty("toDate")){
         
         dbQuery.$or =[{startDate:{ $gt:searchQuery.fromDate , $lt:searchQuery.toDate }},
-                      {$and:[ {startDate:{$lt:searchQuery.fromDate}}, {endDate:{$lt:searchQuery.fromDate }} ] }];
+                      {$and:[ {startDate:{$lt:searchQuery.fromDate}}, {endDate:{$gt:searchQuery.fromDate }} ] }];
         
         //console.log(JSON.stringify(dbQuery,undefined,2));
     }else if(searchQuery.hasOwnProperty("fromDate") || searchQuery.hasOwnProperty("toDate")){
@@ -36,6 +38,9 @@ router.get('/search/', (req,res) => {
     }
 
             Holidays.find(dbQuery).then( (holidays) => {
+                                 if(holidays.length === 0 ){
+                                        return res.status(404).send();
+                                 }
                                  res.send({holidays});
                                 })
                               .catch( e => res.status(400).send(e));
@@ -56,7 +61,7 @@ router.get('/id/:id', (req,res) => {
 //update holiday by ID -> return holiday = json
 router.patch('/id/:id', (req,res) => {
     let id = req.params['id'];
-    let body = _.pick(req.body, ['startDate','endDate','holidayType','status','actionBy']);
+    let body = _.pick(req.body, [ 'department', 'startDate','endDate','holidayType','status','actionBy']);
     body.actionDate = new Date();
 
     Holidays.findByIdAndUpdate(id,body,{new:true}).then( holiday => {
@@ -75,7 +80,7 @@ router.post('/', (req,res) => {
                                         if(!user){
                                           return   res.status(404).send({message:'User not found!'});
                                         }
-
+                                        
                                         let holiday = new Holidays({
                                             staff_id:user._id,
                                             staffName:user.name,

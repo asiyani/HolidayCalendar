@@ -10,14 +10,11 @@ var { Users } = require('./../models/user');
 var usersJson = require('./../seed/users.json');
 var departments = ['IT', 'Legal', 'Marketing', 'Human Resources'];
 
-before ( done => {
+before( done => {
     console.log('Removing users data.......');
-    Users.remove({}).then(() => {
-            console.log('Adding fresh data');
-            addUser();
-            done();
-        })
-        .catch(e => console.log(e));
+    Users.remove({}).then(() => addUser())
+                    .then (() => done())
+                    .catch(e => console.log(e));
 });
 
 describe('GET /api/v1/staff/department/:department', () => {
@@ -69,7 +66,7 @@ describe('GET /api/v1/staff/id/:id', () => {
 
     it('should not find any staff for random ID', (done) => {
         let id = new mongoose.Types.ObjectId();
-        supertest(app).get(`/api/v1/staff/id/${id}`)
+        supertest(app).get(`/api/v1/staff/id/${id.toHexString()}`)
                         .expect(404)
                         .expect( res => {
                             expect(res.body.user).toNotExist();
@@ -160,7 +157,7 @@ describe('PATCH /api/v1/staff/id/:id', () => {
 
     it('should not update staff for random ID', (done) => {
         let id = new mongoose.Types.ObjectId();
-        supertest(app).get(`/api/v1/staff/id/${id}`)
+        supertest(app).get(`/api/v1/staff/id/${id.toHexString()}`)
                         .expect(404)
                         .expect( res => {
                             expect(res.body.user).toNotExist();
@@ -231,7 +228,7 @@ describe('DELETE /api/v1/staff/:id', () => {
 
     it('should not find any USER for random ID', (done) => {
         let id = new mongoose.Types.ObjectId();
-        supertest(app).delete(`/api/v1/staff/${id}`)
+        supertest(app).delete(`/api/v1/staff/${id.toHexString()}`)
                         .expect(404)
                         .expect( res => {
                             expect(res.body.user).toNotExist();
