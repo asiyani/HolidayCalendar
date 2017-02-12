@@ -6,7 +6,7 @@ Holiday Calendar is a Holiday planner for an organisation.
 
 Feature:
 
-* staff can view his own debarment holidays.
+* staff can view his own department holidays.
 * List of his own holiday.
 * Request holiday. 
 * Admin login for supervisor and managers.
