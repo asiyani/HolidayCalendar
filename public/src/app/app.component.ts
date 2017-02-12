@@ -7,4 +7,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app works!';
+
+  
+  logout(){
+    alert('logout');
+  }
+  openAdmin(){
+    alert('open Admin ');
+  }
 }

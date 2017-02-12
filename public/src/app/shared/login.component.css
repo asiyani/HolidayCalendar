@@ -1,0 +1,10 @@
+.app-content {
+  padding: 20px;
+  width: 500px;
+  height: 300px;
+  background: white;
+}
+
+.example-full-width {
+    width: inherit;
+}
